@@ -1,330 +1,268 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Portfolio | Fahmi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         body { 
-            font-family: 'Inter', sans-serif; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #030712; /* Sangat gelap (Tailwind gray-950) */
+            color: #f3f4f6;
             cursor: none;
-            overflow-x: hidden; /* Mencegah scrollbar horizontal akibat animasi 3D */
+            overflow-x: hidden;
+        }
+
+        /* Page Transition Overlay */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #4f46e5; /* Indigo-600 */
+            z-index: 9999;
+            transform-origin: bottom;
+            pointer-events: none;
+        }
+
+        /* Custom Cursor Inversi */
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px; height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference; /* Efek memukau inversi warna */
+            transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            transform: translate(-50%, -50%);
         }
         
         @media (pointer: coarse) {
             body { cursor: auto; }
-            #custom-cursor, #cursor-trail { display: none !important; }
+            .cursor-dot, .cursor-outline { display: none !important; }
         }
 
-        .solid-gradient {
-            background: linear-gradient(90deg, #6366f1, #3b82f6);
+        /* Teks Gradasi Artistik */
+        .text-gradient {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .card-hover {
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .card-hover:hover {
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.2);
-            border-color: #6366f1;
-        }
-
-        /* --- ANIMASI SCROLL (TEXT & LIPATAN) --- */
-        
-        /* Animasi Teks Slide Up */
-        .reveal-text {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .reveal-text.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* Glassmorphism kuat tanpa terlalu transparan */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Container untuk efek 3D Lipatan */
-        .perspective-container {
-            perspective: 1200px;
+        /* Ambient Glow Background */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        /* Animasi Efek Lipatan (Folding/Flip) */
-        .reveal-fold {
-            opacity: 0;
-            /* Mulai dengan posisi terlipat ke belakang dan agak turun */
-            transform: rotateX(-60deg) translateY(50px) scale(0.95);
-            transform-origin: top center;
-            transform-style: preserve-3d;
-            transition: opacity 0.8s ease, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Efek memantul halus */
-        }
-        .reveal-fold.is-visible {
-            opacity: 1;
-            transform: rotateX(0) translateY(0) scale(1);
-        }
-
-        /* Delay berurutan untuk elemen yang berjajar */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
+        /* Utility Hide untuk GSAP */
+        .gsap-reveal { visibility: hidden; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200 antialiased selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <div id="custom-cursor" class="fixed w-3 h-3 bg-indigo-500 rounded-full pointer-events-none z-[100] transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"></div>
-    <div id="cursor-trail" class="fixed w-8 h-8 border-2 border-indigo-400 rounded-full pointer-events-none z-[99] transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out"></div>
+    <div class="page-transition" id="transition-overlay"></div>
 
-    <nav class="fixed w-full z-50 top-0 bg-gray-900 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 font-bold text-2xl tracking-tight text-white hover-sound interactive-el cursor-pointer reveal-text is-visible">
-                    Portfo<span class="text-indigo-500">lio.</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#beranda" class="hover:text-indigo-400 transition text-sm font-semibold hover-sound interactive-el reveal-text delay-100 is-visible">Beranda</a>
-                        <a href="#profile" class="hover:text-indigo-400 transition text-sm font-semibold hover-sound interactive-el reveal-text delay-200 is-visible">Profile</a>
-                        <a href="#artefak" class="hover:text-indigo-400 transition text-sm font-semibold hover-sound interactive-el reveal-text delay-300 is-visible">Artefak</a>
-                        <a href="#refleksi" class="hover:text-indigo-400 transition text-sm font-semibold hover-sound interactive-el reveal-text delay-400 is-visible">Refleksi</a>
-                    </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="ambient-glow" id="ambient-glow"></div>
+
+    <nav class="fixed w-full z-50 top-0 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-24">
+                <a href="index.html" class="nav-link flex-shrink-0 font-extrabold text-2xl tracking-tighter text-white magnetic-btn">
+                    Fahmi<span class="text-indigo-500">.</span>
+                </a>
+                <div class="hidden md:flex space-x-10">
+                    <a href="index.html" class="nav-link text-sm font-semibold text-white tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn active-link">Beranda</a>
+                    <a href="profile.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Profile</a>
+                    <a href="artefak.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Artefak</a>
+                    <a href="refleksi.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Refleksi</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section id="beranda" class="min-h-screen flex items-center bg-gray-900 pt-20 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 w-full flex flex-col md:flex-row items-center justify-between perspective-container">
-            <div class="md:w-1/2 text-left">
-                <h2 class="text-indigo-500 font-semibold tracking-wide mb-2 uppercase text-sm reveal-text">Selamat Datang di e-Portfolio</h2>
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 text-white leading-tight reveal-text delay-100">
-                    Halo, Saya <br><span class="solid-gradient">Izzul Fahmi</span>
-                </h1>
-                <p class="text-lg text-gray-400 mb-10 max-w-lg leading-relaxed reveal-text delay-200">
-                    Pendidik Profesional yang memadukan pedagogi modern dengan teknologi. Lulusan S1 FKIP Universitas Jember yang kini menempuh PPG Prajabatan.
-                </p>
-                <div class="flex space-x-4 reveal-text delay-300">
-                    <a href="#profile" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded border border-indigo-500 transition duration-300 hover-sound interactive-el">
-                        Mulai Jelajahi
-                    </a>
-                    <a href="#artefak" class="bg-transparent hover:bg-gray-800 text-gray-300 font-medium py-3 px-8 rounded border border-gray-700 transition duration-300 hover-sound interactive-el">
-                        Lihat Artefak
-                    </a>
+    <main class="min-h-screen flex items-center pt-24 relative overflow-hidden px-6">
+        <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+            
+            <div class="z-10">
+                <div class="gsap-reveal overflow-hidden mb-4">
+                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-sm gs-line">Pendidik Profesional • PPG Prajabatan</p>
                 </div>
-            </div>
-            <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center">
-                <div class="w-72 h-72 md:w-96 md:h-96 bg-gray-800 rounded-2xl border border-gray-700 flex items-center justify-center relative overflow-hidden group interactive-el reveal-fold delay-200">
-                    <i class="fas fa-user-tie text-9xl text-gray-600 group-hover:scale-110 transition-transform duration-500"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="profile" class="py-24 bg-gray-800 border-y border-gray-700">
-        <div class="max-w-5xl mx-auto px-4 perspective-container">
-            <h2 class="text-3xl font-bold mb-12 text-white flex items-center reveal-text"><span class="w-8 h-1 bg-indigo-500 mr-4"></span> Profile Pendidik</h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <p class="text-gray-300 leading-relaxed mb-6 reveal-text delay-100">
-                        Sebagai pendidik, saya percaya bahwa pembelajaran harus relevan dengan zamannya. Fokus utama saya adalah menciptakan ekosistem belajar yang interaktif melalui <strong>Project-Based Learning</strong> dan penilaian HOTS (Higher-Order Thinking Skills).
-                    </p>
-                    <p class="text-gray-300 leading-relaxed reveal-text delay-200">
-                        Selain kemampuan pedagogik, saya juga memiliki ketertarikan kuat dalam pengembangan teknologi pendidikan, guna menciptakan solusi digital yang memperkuat manajemen kelas dan efisiensi pembelajaran.
-                    </p>
-                </div>
-                <div class="bg-gray-900 p-8 rounded-lg border border-gray-700 reveal-fold delay-200">
-                    <h3 class="text-xl font-bold text-white mb-6 border-b border-gray-800 pb-2">Kompetensi Inti</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-center text-gray-300 interactive-el hover-sound"><i class="fas fa-check-circle text-indigo-500 mr-3"></i> Desain Pembelajaran Berdiferensiasi</li>
-                        <li class="flex items-center text-gray-300 interactive-el hover-sound"><i class="fas fa-check-circle text-indigo-500 mr-3"></i> Asesmen Autentik & Evaluasi HOTS</li>
-                        <li class="flex items-center text-gray-300 interactive-el hover-sound"><i class="fas fa-check-circle text-indigo-500 mr-3"></i> Integrasi Teknologi & IoT dalam Pendidikan</li>
-                        <li class="flex items-center text-gray-300 interactive-el hover-sound"><i class="fas fa-check-circle text-indigo-500 mr-3"></i> Pengembangan Sistem Edukasi</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="artefak" class="py-24 bg-gray-900">
-        <div class="max-w-6xl mx-auto px-4 perspective-container">
-            <h2 class="text-3xl font-bold mb-12 text-white flex items-center justify-end reveal-text"><span class="w-8 h-1 bg-indigo-500 mr-4"></span> Artefak & Karya <span class="w-8 h-1 bg-indigo-500 ml-4"></span></h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 card-hover interactive-el hover-sound reveal-fold delay-100">
-                    <div class="w-12 h-12 bg-gray-900 rounded flex items-center justify-center mb-6"><i class="fas fa-book-open text-indigo-400 text-xl"></i></div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Modul Ajar Diferensiasi</h3>
-                    <p class="text-gray-400 text-sm mb-4">Perangkat pembelajaran lengkap berbasis pendekatan TaRL (Teaching at the Right Level) untuk memfasilitasi keragaman siswa.</p>
-                </div>
-                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 card-hover interactive-el hover-sound reveal-fold delay-200">
-                    <div class="w-12 h-12 bg-gray-900 rounded flex items-center justify-center mb-6"><i class="fas fa-microchip text-indigo-400 text-xl"></i></div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Inovasi Media & IoT</h3>
-                    <p class="text-gray-400 text-sm mb-4">Pengembangan media pembelajaran perangkat keras menggunakan Arduino dan ESP32 untuk simulasi presensi kelas.</p>
-                </div>
-                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 card-hover interactive-el hover-sound reveal-fold delay-300">
-                    <div class="w-12 h-12 bg-gray-900 rounded flex items-center justify-center mb-6"><i class="fas fa-server text-indigo-400 text-xl"></i></div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Skoola: Sistem Edukasi</h3>
-                    <p class="text-gray-400 text-sm mb-4">Pengembangan sistem manajemen sekolah multi-tenant sebagai bukti penerapan teknologi untuk ekosistem pendidikan.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="refleksi" class="py-24 bg-gray-800 border-y border-gray-700">
-        <div class="max-w-4xl mx-auto px-4 perspective-container">
-            <h2 class="text-3xl font-bold mb-12 text-white flex items-center reveal-text"><span class="w-8 h-1 bg-indigo-500 mr-4"></span> Refleksi Pembelajaran</h2>
-            <div class="space-y-8">
-                <div class="bg-gray-900 p-8 rounded border-l-4 border-indigo-500 card-hover interactive-el hover-sound reveal-fold delay-100">
-                    <h3 class="text-xl font-bold mb-3 text-white">Praktik Pengalaman Lapangan (PPL)</h3>
-                    <p class="text-gray-400 leading-relaxed">Berhadapan langsung dengan dinamika kelas menyadarkan saya bahwa peran guru lebih dari sekadar pentransfer ilmu. Guru adalah fasilitator dan navigator bagi siswa. Diferensiasi instruksional terbukti esensial dalam mengakomodasi gaya belajar yang beragam.</p>
-                </div>
-                <div class="bg-gray-900 p-8 rounded border-l-4 border-blue-500 card-hover interactive-el hover-sound reveal-fold delay-200">
-                    <h3 class="text-xl font-bold mb-3 text-white">Filosofi Pendidikan Ki Hadjar Dewantara</h3>
-                    <p class="text-gray-400 leading-relaxed">Pendidikan adalah proses "menuntun" kodrat alam dan kodrat zaman anak. Pemahaman ini mengubah paradigma saya untuk selalu berpihak pada murid, mengedepankan pendidikan budi pekerti, dan mempersiapkan mereka menghadapi tantangan zaman.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="penilaian" class="py-24 bg-gray-900">
-        <div class="max-w-5xl mx-auto px-4 text-center perspective-container">
-            <h2 class="text-3xl font-bold mb-16 text-white reveal-text">Metrik Pencapaian</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="p-8 bg-gray-800 rounded border border-gray-700 interactive-el hover-sound card-hover reveal-fold delay-100">
-                    <div class="text-4xl font-black text-indigo-400 mb-3">A</div>
-                    <div class="text-sm font-medium text-gray-400 uppercase tracking-wider">Pemahaman<br>Peserta Didik</div>
-                </div>
-                <div class="p-8 bg-gray-800 rounded border border-gray-700 interactive-el hover-sound card-hover reveal-fold delay-200">
-                    <div class="text-4xl font-black text-indigo-400 mb-3">A</div>
-                    <div class="text-sm font-medium text-gray-400 uppercase tracking-wider">Prinsip<br>Pengajaran</div>
-                </div>
-                <div class="p-8 bg-gray-800 rounded border border-gray-700 interactive-el hover-sound card-hover reveal-fold delay-300">
-                    <div class="text-4xl font-black text-indigo-400 mb-3">A</div>
-                    <div class="text-sm font-medium text-gray-400 uppercase tracking-wider">Praktik<br>Lapangan</div>
-                </div>
-                <div class="p-8 bg-gray-800 rounded border border-gray-700 interactive-el hover-sound card-hover reveal-fold delay-400">
-                    <div class="text-4xl font-black text-indigo-400 mb-3"><i class="fas fa-check"></i></div>
-                    <div class="text-sm font-medium text-gray-400 uppercase tracking-wider">Sertifikasi<br>Pendidik</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="model-guru" class="py-24 bg-gray-800 border-t border-gray-700">
-        <div class="max-w-4xl mx-auto px-4 perspective-container">
-            <div class="bg-gray-900 p-12 rounded border border-gray-700 text-center relative overflow-hidden interactive-el hover-sound card-hover reveal-fold delay-100">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-900/50 rounded-bl-full border-b border-l border-indigo-500/20"></div>
-                <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-900/50 rounded-tr-full border-t border-r border-blue-500/20"></div>
                 
-                <h2 class="text-3xl font-bold text-white mb-6 relative z-10 reveal-text">Guru Transformatif & Adaptif</h2>
-                <blockquote class="text-xl text-gray-300 italic mb-8 relative z-10 reveal-text delay-100">
-                    "Pendidik sejati tidak hanya mengajar untuk hari ini, tetapi merancang peradaban melalui pikiran analitis, karakter tangguh, dan kesiapan teknologi bagi generasi masa depan."
-                </blockquote>
+                <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight tracking-tighter">
+                    <div class="gsap-reveal overflow-hidden"><span class="gs-line block">Inovasi</span></div>
+                    <div class="gsap-reveal overflow-hidden"><span class="gs-line block">Ruang <span class="text-gradient">Kelas.</span></span></div>
+                </h1>
+                
+                <div class="gsap-reveal overflow-hidden mb-10">
+                    <p class="text-gray-400 text-lg md:text-xl max-w-lg font-light leading-relaxed gs-line">
+                        Mengintegrasikan pedagogi modern, Project-Based Learning, dan teknologi IoT untuk menciptakan ekosistem pendidikan yang adaptif.
+                    </p>
+                </div>
+                
+                <div class="gsap-reveal flex space-x-6 pt-4 gs-btn-group">
+                    <a href="profile.html" class="nav-link magnetic-btn group relative px-8 py-4 bg-white text-gray-950 font-bold rounded-full overflow-hidden">
+                        <span class="relative z-10">Kenali Saya</span>
+                        <div class="absolute inset-0 bg-indigo-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out z-0"></div>
+                        <span class="relative z-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute inset-0 flex items-center justify-center">Kenali Saya</span>
+                    </a>
+                    <a href="artefak.html" class="nav-link magnetic-btn px-8 py-4 rounded-full border border-gray-700 text-white font-bold hover:border-indigo-500 transition-colors duration-300 flex items-center">
+                        Lihat Artefak <i class="fas fa-arrow-right ml-3 -rotate-45 group-hover:rotate-0 transition-transform"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <footer class="bg-gray-900 border-t border-gray-800 py-10 text-center">
-        <p class="text-sm text-gray-500 font-medium tracking-wide">
-            &copy; 2026 Fahmi Portfolio. Dirancang untuk e-Portfolio Pendidikan Profesional.
-        </p>
-    </footer>
+            <div class="flex justify-center md:justify-end z-10 gsap-reveal gs-image">
+                <div class="relative w-full max-w-md h-[500px] rounded-3xl glass-panel border border-gray-700/50 flex flex-col justify-end p-8 overflow-hidden group shadow-2xl" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                    <div class="absolute inset-0 opacity-20 group-hover:scale-110 transition-transform duration-1000" style="background-image: radial-gradient(#4f46e5 1px, transparent 1px); background-size: 20px 20px;"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(79,70,229,0.5)]">
+                            <i class="fas fa-microchip text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Fahmi</h3>
+                        <p class="text-gray-300 font-medium mb-1">S1 FKIP Univ. Jember</p>
+                        <p class="text-gray-500 text-sm">Tech Enthusiast & Pengembang Skoola</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
 
     <script>
-        // 1. SCROLL ANIMATION (Intersection Observer)
-        // Mengecek apakah elemen masuk ke dalam layar, lalu menambahkan class 'is-visible'
-        document.addEventListener("DOMContentLoaded", () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15 // Elemen akan beranimasi saat 15% bagiannya terlihat
-            };
+        // --- 1. ENTRY ANIMATION (Membuka Layar) ---
+        // Saat halaman baru dimuat, turunkan tirai layar
+        gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" });
+        gsap.to("#transition-overlay", { scaleY: 0, duration: 1, ease: "power4.inOut", delay: 0.2 });
 
-            const scrollObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // Optional: Berhenti mengawasi elemen setelah muncul sekali
-                        // observer.unobserve(entry.target);
+        // Animasi Teks Masuk
+        gsap.set(".gs-line", { y: 100 });
+        gsap.set(".gs-btn-group, .gs-image", { opacity: 0, y: 50 });
+        gsap.set(".gsap-reveal", { visibility: "visible" });
+
+        const tl = gsap.timeline({ delay: 0.8 });
+        tl.to(".gs-line", { y: 0, duration: 1, stagger: 0.1, ease: "power4.out" })
+          .to(".gs-btn-group", { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
+          .to(".gs-image", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.8");
+
+        // --- 2. PAGE TRANSITION LOGIC (Saat Klik Menu) ---
+        // Mencegat semua klik pada elemen dengan class 'nav-link'
+        document.querySelectorAll('a.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetUrl = this.getAttribute('href');
+                
+                // Jangan jalankan animasi jika mengklik halaman yang sedang aktif
+                if(targetUrl === window.location.pathname.split('/').pop() || targetUrl === '#') return;
+
+                e.preventDefault(); // Tahan perpindahan halaman sesaat
+
+                // Naikkan tirai dari bawah
+                gsap.set("#transition-overlay", { transformOrigin: "bottom" });
+                gsap.to("#transition-overlay", { 
+                    scaleY: 1, 
+                    duration: 0.8, 
+                    ease: "power4.inOut",
+                    onComplete: () => {
+                        window.location.href = targetUrl; // Pindah halaman setelah animasi selesai
                     }
                 });
-            }, observerOptions);
-
-            // Menerapkan observer ke semua elemen teks dan lipatan
-            const animatedElements = document.querySelectorAll('.reveal-text, .reveal-fold');
-            animatedElements.forEach(el => scrollObserver.observe(el));
+            });
         });
 
-        // 2. AUDIO INTERACTION (Web Audio API)
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        function playHoverSound() {
-            if (!audioCtx) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
-            
-            gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime); // Volume sangat halus
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
-        }
-
-        document.body.addEventListener('click', initAudio, { once: true });
-        document.body.addEventListener('mousemove', initAudio, { once: true });
-
-        const soundElements = document.querySelectorAll('.hover-sound');
-        soundElements.forEach(el => {
-            el.addEventListener('mouseenter', playHoverSound);
-        });
-
-        // 3. CUSTOM CURSOR LOGIC
-        const cursor = document.getElementById('custom-cursor');
-        const trail = document.getElementById('cursor-trail');
-        const interactives = document.querySelectorAll('.interactive-el, a, button');
-
+        // --- 3. CUSTOM MAGNETIC CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const ambientGlow = document.getElementById('ambient-glow');
         let mouseX = 0, mouseY = 0;
-        let trailX = 0, trailY = 0;
+        let outlineX = 0, outlineY = 0;
 
-        document.addEventListener('mousemove', (e) => {
+        window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            cursor.style.left = `${mouseX}px`;
-            cursor.style.top = `${mouseY}px`;
+            
+            // Dot follows instantly
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+
+            // Ambient glow follows mouse (centered)
+            ambientGlow.style.left = `${mouseX - 300}px`;
+            ambientGlow.style.top = `${mouseY - 300}px`;
         });
 
-        function animateTrail() {
-            trailX += (mouseX - trailX) * 0.15;
-            trailY += (mouseY - trailY) * 0.15;
-            trail.style.left = `${trailX}px`;
-            trail.style.top = `${trailY}px`;
-            requestAnimationFrame(animateTrail);
+        // Smooth follow for outline
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            cursorOutline.style.left = `${outlineX}px`;
+            cursorOutline.style.top = `${outlineY}px`;
+            requestAnimationFrame(animateCursor);
         }
-        animateTrail();
+        animateCursor();
 
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                trail.style.transform = 'translate(-5px, -5px) scale(1.8)';
-                trail.style.borderColor = '#818cf8';
-                cursor.style.transform = 'translate(-5px, -5px) scale(0.5)';
+        // Magnetic Buttons Logic
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Tarik tombol ke arah mouse
+                gsap.to(this, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: "power2.out" });
+                
+                // Besarkan kursor
+                cursorOutline.style.width = "60px";
+                cursorOutline.style.height = "60px";
+                cursorOutline.style.backgroundColor = "white";
+                cursorOutline.style.mixBlendMode = "difference";
             });
-            el.addEventListener('mouseleave', () => {
-                trail.style.transform = 'translate(-50%, -50%) scale(1)';
-                trail.style.borderColor = '#818cf8';
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+
+            btn.addEventListener('mouseleave', function() {
+                // Kembalikan tombol ke posisi semula
+                gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+                
+                // Kembalikan kursor
+                cursorOutline.style.width = "40px";
+                cursorOutline.style.height = "40px";
+                cursorOutline.style.backgroundColor = "transparent";
+                cursorOutline.style.mixBlendMode = "normal";
             });
         });
     </script>
