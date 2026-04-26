@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Artefak | Fahmi E-Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -12,26 +12,23 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; cursor: none; overflow-x: hidden; }
-        .page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #4f46e5; z-index: 9999; transform-origin: bottom; pointer-events: none; }
-        .cursor-dot { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background-color: white; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; transform: translate(-50%, -50%); }
-        .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s, background-color 0.3s; transform: translate(-50%, -50%); }
+        html, body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; cursor: none; overflow-x: hidden; width: 100%; }
+        .page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #4f46e5; z-index: 99999; transform-origin: bottom; pointer-events: none; }
+        .cursor-dot { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background-color: white; border-radius: 50%; pointer-events: none; z-index: 100000; mix-blend-mode: difference; transform: translate(-50%, -50%); }
+        .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 99998; transition: width 0.3s, height 0.3s, background-color 0.3s; transform: translate(-50%, -50%); }
         @media (pointer: coarse) { body { cursor: auto; } .cursor-dot, .cursor-outline { display: none !important; } }
         .text-gradient { background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; }
+        .ambient-glow { position: absolute; width: 100vw; height: 100vh; max-width: 600px; max-height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; }
         .gsap-reveal { visibility: hidden; }
         .artefak-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, rgba(79,70,229,0.1)); opacity: 0; transition: opacity 0.3s ease; }
         .artefak-card:hover::before { opacity: 1; }
 
-        .nav-mobile-item {
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 9999px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 48px; height: 48px; color: #9ca3af;
-        }
+        .bottom-nav-mobile { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 90000; display: flex; align-items: center; padding: 0.5rem; border-radius: 9999px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); white-space: nowrap; }
+        .nav-mobile-item { display: flex; align-items: center; justify-content: center; border-radius: 9999px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 44px; height: 44px; color: #9ca3af; margin: 0 0.25rem; }
         .nav-mobile-item:hover { background: rgba(31, 41, 55, 0.8); }
-        .nav-mobile-item .nav-text { max-width: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.875rem; font-weight: 700; white-space: nowrap; margin-left: 0; }
-        .nav-mobile-item.active-mobile { width: auto; padding: 0 1.25rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .nav-mobile-item .nav-text { max-width: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.75rem; font-weight: 700; margin-left: 0; }
+        .nav-mobile-item.active-mobile { width: auto; padding: 0 1rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; }
         .nav-mobile-item.active-mobile .nav-text { max-width: 100px; opacity: 1; margin-left: 0.5rem; }
     </style>
 </head>
@@ -41,9 +38,9 @@
     <div class="cursor-dot"></div><div class="cursor-outline"></div><div class="ambient-glow" id="ambient-glow"></div>
 
     <nav class="fixed w-full z-50 top-0 glass-panel border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex justify-center md:justify-between items-center h-16 md:h-24">
-                <a href="index.html" class="nav-link desktop-nav flex-shrink-0 font-extrabold text-2xl tracking-tighter text-white magnetic-btn">Fahmi<span class="text-indigo-500">.</span></a>
+                <a href="index.html" class="nav-link desktop-nav flex-shrink-0 font-extrabold text-xl md:text-2xl tracking-tighter text-white magnetic-btn">Fahmi<span class="text-indigo-500">.</span></a>
                 <div class="hidden md:flex space-x-10">
                     <a href="index.html" class="desktop-nav nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Beranda</a>
                     <a href="profile.html" class="desktop-nav nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Profile</a>
@@ -54,106 +51,106 @@
         </div>
     </nav>
 
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden glass-panel rounded-full p-2 flex items-center space-x-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-gray-700/80">
+    <div class="bottom-nav-mobile md:hidden glass-panel border border-gray-700/80">
         <a href="index.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-home text-lg"></i><span class="nav-text">Beranda</span></a>
         <a href="profile.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-user text-lg"></i><span class="nav-text">Profile</span></a>
         <a href="artefak.html" class="nav-mobile-item nav-link active-mobile magnetic-btn"><i class="fas fa-folder-open text-lg"></i><span class="nav-text">Artefak</span></a>
         <a href="refleksi.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-lightbulb text-lg"></i><span class="nav-text">Refleksi</span></a>
     </div>
 
-    <main class="min-h-screen pt-32 md:pt-40 pb-32 relative px-6">
+    <main class="min-h-screen pt-24 md:pt-36 pb-32 relative px-4 sm:px-6 w-full">
         <div class="max-w-7xl mx-auto w-full">
             
-            <div class="text-center mb-16 md:mb-20">
-                <div class="gsap-reveal overflow-hidden mb-4">
-                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-xs md:text-sm gs-line">Karya & Inovasi Pembelajaran</p>
+            <div class="text-center mb-12 md:mb-20">
+                <div class="gsap-reveal overflow-hidden mb-3 md:mb-4">
+                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-[10px] md:text-sm gs-line">Karya & Inovasi Pembelajaran</p>
                 </div>
                 <div class="gsap-reveal overflow-hidden">
-                    <h1 class="text-4xl md:text-7xl font-black gs-line tracking-tighter">
+                    <h1 class="text-3xl sm:text-5xl md:text-7xl font-black gs-line tracking-tighter">
                         Galeri <span class="text-gradient">Artefak.</span>
                     </h1>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-24 md:mb-32">
-                <div class="gsap-reveal gs-card z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-20 md:mb-32">
+                <div class="gsap-reveal gs-card z-10 w-full">
                     <div class="h-full bg-gray-900 rounded-3xl p-6 md:p-8 border border-gray-800 relative overflow-hidden group artefak-card magnetic-btn" data-tilt data-tilt-max="5" data-tilt-speed="400">
                         <div class="w-12 h-12 md:w-14 md:h-14 bg-indigo-500/20 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-server text-xl md:text-2xl text-indigo-400"></i></div>
-                        <h3 class="text-xl md:text-2xl font-bold text-white mb-3">Skoola System</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-8">Pengembangan arsitektur <em>multi-tenant</em> sistem manajemen sekolah berbasis Golang dan React untuk administrasi pendidikan.</p>
-                        <a href="#" class="inline-flex items-center text-sm font-bold text-indigo-400 hover:text-indigo-300 transition-colors">Lihat Repositori <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Skoola System</h3>
+                        <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6 md:mb-8">Pengembangan arsitektur <em>multi-tenant</em> sistem manajemen sekolah berbasis Golang dan React untuk administrasi pendidikan.</p>
+                        <a href="#" class="inline-flex items-center text-[13px] md:text-sm font-bold text-indigo-400 hover:text-indigo-300 transition-colors">Lihat Repositori <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
                     </div>
                 </div>
 
-                <div class="gsap-reveal gs-card z-10">
+                <div class="gsap-reveal gs-card z-10 w-full">
                     <div class="h-full bg-gray-900 rounded-3xl p-6 md:p-8 border border-gray-800 relative overflow-hidden group artefak-card magnetic-btn" data-tilt data-tilt-max="5" data-tilt-speed="400">
                         <div class="w-12 h-12 md:w-14 md:h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-microchip text-xl md:text-2xl text-purple-400"></i></div>
-                        <h3 class="text-xl md:text-2xl font-bold text-white mb-3">Media IoT Kelas</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-8">Prototipe pembelajaran berbasis mikrokontroler (ESP32) untuk sistem presensi dan logika komputasional siswa.</p>
-                        <a href="#" class="inline-flex items-center text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">Lihat Dokumentasi <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Media IoT Kelas</h3>
+                        <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6 md:mb-8">Prototipe pembelajaran berbasis mikrokontroler (ESP32) untuk sistem presensi dan logika komputasional siswa.</p>
+                        <a href="#" class="inline-flex items-center text-[13px] md:text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">Lihat Dokumentasi <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
                     </div>
                 </div>
 
-                <div class="gsap-reveal gs-card z-10">
+                <div class="gsap-reveal gs-card z-10 w-full">
                     <div class="h-full bg-gray-900 rounded-3xl p-6 md:p-8 border border-gray-800 relative overflow-hidden group artefak-card magnetic-btn" data-tilt data-tilt-max="5" data-tilt-speed="400">
                         <div class="w-12 h-12 md:w-14 md:h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-file-pdf text-xl md:text-2xl text-blue-400"></i></div>
-                        <h3 class="text-xl md:text-2xl font-bold text-white mb-3">Modul Berdiferensiasi</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-8">Rancangan pembelajaran lengkap yang menerapkan pendekatan <em>Teaching at the Right Level</em> (TaRL) dan HOTS.</p>
-                        <a href="#" class="inline-flex items-center text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors">Unduh PDF <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
+                        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">Modul Berdiferensiasi</h3>
+                        <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6 md:mb-8">Rancangan pembelajaran lengkap yang menerapkan pendekatan <em>Teaching at the Right Level</em> (TaRL) dan HOTS.</p>
+                        <a href="#" class="inline-flex items-center text-[13px] md:text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors">Unduh PDF <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i></a>
                     </div>
                 </div>
             </div>
 
-            <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-16 md:my-20"></div>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-12 md:my-20"></div>
 
-            <div class="mt-10">
-                <div class="text-center mb-12 md:mb-16 scroll-reveal-header">
-                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-4">Praktik Mengajar <span class="text-gradient">Terbimbing.</span></h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">Dokumentasi perjalanan siklus pengajaran di lapangan selama menempuh program PPG Prajabatan.</p>
+            <div class="mt-8 md:mt-10">
+                <div class="text-center mb-10 md:mb-16 scroll-reveal-header px-2">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight mb-3 md:mb-4">Praktik Mengajar <span class="text-gradient">Terbimbing.</span></h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto text-[13px] md:text-base">Dokumentasi perjalanan siklus pengajaran di lapangan selama menempuh program PPG Prajabatan.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                    <div class="scroll-reveal-card z-10">
+                    <div class="scroll-reveal-card z-10 w-full">
                         <div class="relative bg-gray-900 rounded-3xl p-1 border border-gray-800 overflow-hidden group" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.1">
                             <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
                             <div class="bg-gray-900 rounded-[23px] p-6 md:p-8 h-full relative z-10">
                                 <div class="flex justify-between items-start mb-6">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-800 border border-gray-700 rounded-full flex items-center justify-center"><span class="text-lg md:text-xl font-black text-white">1</span></div>
-                                    <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-bold rounded-full border border-indigo-500/20">Siklus Pertama</span>
+                                    <span class="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] md:text-xs font-bold rounded-full border border-indigo-500/20">Siklus Pertama</span>
                                 </div>
-                                <h3 class="text-lg md:text-xl font-bold text-white mb-3">Observasi & Perencanaan</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed mb-6">Berfokus pada pemetaan karakteristik peserta didik, penyusunan RPP awal, dan adaptasi manajemen kelas.</p>
-                                <button class="w-full py-3 bg-gray-800 hover:bg-indigo-600 text-white text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
+                                <h3 class="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Observasi & Perencanaan</h3>
+                                <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6">Berfokus pada pemetaan karakteristik peserta didik, penyusunan RPP awal, dan adaptasi manajemen kelas.</p>
+                                <button class="w-full py-3 bg-gray-800 hover:bg-indigo-600 text-white text-[13px] md:text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="scroll-reveal-card z-10">
+                    <div class="scroll-reveal-card z-10 w-full">
                         <div class="relative bg-gray-900 rounded-3xl p-1 border border-gray-800 overflow-hidden group" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.1">
                             <div class="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
                             <div class="bg-gray-900 rounded-[23px] p-6 md:p-8 h-full relative z-10">
                                 <div class="flex justify-between items-start mb-6">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-800 border border-gray-700 rounded-full flex items-center justify-center"><span class="text-lg md:text-xl font-black text-white">2</span></div>
-                                    <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs font-bold rounded-full border border-purple-500/20">Siklus Kedua</span>
+                                    <span class="px-2 py-1 bg-purple-500/10 text-purple-400 text-[10px] md:text-xs font-bold rounded-full border border-purple-500/20">Siklus Kedua</span>
                                 </div>
-                                <h3 class="text-lg md:text-xl font-bold text-white mb-3">Implementasi TaRL</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed mb-6">Penerapan Modul Ajar yang memuat diferensiasi konten. Penggunaan media interaktif dan gamifikasi.</p>
-                                <button class="w-full py-3 bg-gray-800 hover:bg-purple-600 text-white text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
+                                <h3 class="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Implementasi TaRL</h3>
+                                <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6">Penerapan Modul Ajar yang memuat diferensiasi konten. Penggunaan media interaktif dan gamifikasi.</p>
+                                <button class="w-full py-3 bg-gray-800 hover:bg-purple-600 text-white text-[13px] md:text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="scroll-reveal-card z-10">
+                    <div class="scroll-reveal-card z-10 w-full">
                         <div class="relative bg-gray-900 rounded-3xl p-1 border border-gray-800 overflow-hidden group" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.1">
                             <div class="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
                             <div class="bg-gray-900 rounded-[23px] p-6 md:p-8 h-full relative z-10">
                                 <div class="flex justify-between items-start mb-6">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-gray-800 border border-gray-700 rounded-full flex items-center justify-center"><span class="text-lg md:text-xl font-black text-white">3</span></div>
-                                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-bold rounded-full border border-blue-500/20">Siklus Ketiga</span>
+                                    <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-[10px] md:text-xs font-bold rounded-full border border-blue-500/20">Siklus Ketiga</span>
                                 </div>
-                                <h3 class="text-lg md:text-xl font-bold text-white mb-3">Evaluasi HOTS</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed mb-6">Pelaksanaan akhir dengan Project-Based Learning dan analisis hasil ketuntasan belajar secara autentik.</p>
-                                <button class="w-full py-3 bg-gray-800 hover:bg-blue-600 text-white text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
+                                <h3 class="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Evaluasi HOTS</h3>
+                                <p class="text-gray-400 text-[13px] md:text-sm leading-relaxed mb-6">Pelaksanaan akhir dengan Project-Based Learning dan analisis hasil ketuntasan belajar secara autentik.</p>
+                                <button class="w-full py-3 bg-gray-800 hover:bg-blue-600 text-white text-[13px] md:text-sm font-bold rounded-xl transition-colors duration-300 magnetic-btn">Lihat Jurnal</button>
                             </div>
                         </div>
                     </div>
@@ -164,13 +161,12 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
-        function initAll() { ScrollTrigger.getAll().forEach(st => st.kill()); const tiltElements = document.querySelectorAll("[data-tilt]"); if(tiltElements.length > 0) VanillaTilt.init(tiltElements); gsap.set(".gs-line", { y: 50, opacity: 0 }); gsap.set(".gs-image, .gs-content, .gs-card", { opacity: 0, y: 30 }); gsap.set(".gsap-reveal", { visibility: "visible" }); const tl = gsap.timeline({ delay: 0.1 }); tl.to(".gs-line", { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }).to(".gs-image, .gs-content", { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4").to(".gs-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6"); gsap.utils.toArray('.scroll-reveal-header').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 30}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1 }); }); gsap.utils.toArray('.scroll-reveal-card, .scroll-card').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 50}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1, ease: "power3.out" }); }); bindMagneticButtons(); }
-        const cursorDot = document.querySelector('.cursor-dot'); const cursorOutline = document.querySelector('.cursor-outline'); const ambientGlow = document.getElementById('ambient-glow'); let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0; window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; ambientGlow.style.left = `${mouseX - 300}px`; ambientGlow.style.top = `${mouseY - 300}px`; }); function animateCursor() { outlineX += (mouseX - outlineX) * 0.15; outlineY += (mouseY - outlineY) * 0.15; cursorOutline.style.left = `${outlineX}px`; cursorOutline.style.top = `${outlineY}px`; requestAnimationFrame(animateCursor); } animateCursor();
-        function bindMagneticButtons() { document.querySelectorAll('.magnetic-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('mousemove', function(e) { const rect = this.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const strength = this.classList.contains('artefak-card') || this.classList.contains('scroll-card') ? 0.05 : 0.2; gsap.to(this, { x: x * strength, y: y * strength, duration: 0.4, ease: "power2.out" }); cursorOutline.style.width = "60px"; cursorOutline.style.height = "60px"; cursorOutline.style.backgroundColor = "white"; cursorOutline.style.mixBlendMode = "difference"; }); newBtn.addEventListener('mouseleave', function() { gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" }); cursorOutline.style.width = "40px"; cursorOutline.style.height = "40px"; cursorOutline.style.backgroundColor = "transparent"; cursorOutline.style.mixBlendMode = "normal"; }); }); }
-        function updateNavState(path) { document.querySelectorAll('.desktop-nav').forEach(link => { link.classList.remove('active-link', 'text-white'); link.classList.add('text-gray-400'); if(link.getAttribute('href') === path) { link.classList.add('active-link', 'text-white'); link.classList.remove('text-gray-400'); } }); document.querySelectorAll('.nav-mobile-item').forEach(link => { link.classList.remove('active-mobile'); if(link.getAttribute('href') === path) { link.classList.add('active-mobile'); } }); }
-        document.body.addEventListener('click', function(e) { const anchor = e.target.closest('a.nav-link'); if(!anchor) return; const targetUrl = anchor.getAttribute('href'); const currentPath = window.location.pathname.split('/').pop() || 'index.html'; if(targetUrl === currentPath || targetUrl === '#') { e.preventDefault(); return; } e.preventDefault(); gsap.set("#transition-overlay", { transformOrigin: "bottom" }); gsap.to("#transition-overlay", { scaleY: 1, duration: 0.6, ease: "power4.inOut", onComplete: () => { fetch(targetUrl).then(res => res.text()).then(html => { const parser = new DOMParser(); const doc = parser.parseFromString(html, 'text/html'); const newMain = doc.querySelector('main'); if(newMain) { document.querySelector('main').innerHTML = newMain.innerHTML; document.querySelector('main').className = newMain.className; } document.title = doc.title; window.history.pushState({path: targetUrl}, '', targetUrl); updateNavState(targetUrl); gsap.set("#transition-overlay", { transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.6, ease: "power4.inOut", onComplete: initAll }); }).catch(() => { window.location.href = targetUrl; }); } }); });
-        window.addEventListener('popstate', () => window.location.reload());
-        window.onload = () => { gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.8, ease: "power4.inOut", onComplete: initAll }); updateNavState(window.location.pathname.split('/').pop() || 'index.html'); };
+        function initAll() { ScrollTrigger.getAll().forEach(st => st.kill()); const tiltElements = document.querySelectorAll("[data-tilt]"); if(tiltElements.length > 0 && window.matchMedia("(hover: hover)").matches) { VanillaTilt.init(tiltElements); } gsap.set(".gs-line", { y: 50, opacity: 0 }); gsap.set(".gs-image, .gs-content, .gs-card", { opacity: 0, y: 30 }); gsap.set(".gsap-reveal", { visibility: "visible" }); const tl = gsap.timeline({ delay: 0.1 }); tl.to(".gs-line", { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }).to(".gs-image, .gs-content", { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4").to(".gs-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6"); gsap.utils.toArray('.scroll-reveal-header').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 30}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1 }); }); gsap.utils.toArray('.scroll-reveal-card, .scroll-card, .scroll-item').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 50}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1, ease: "power3.out" }); }); bindMagneticButtons(); }
+        const cursorDot = document.querySelector('.cursor-dot'); const cursorOutline = document.querySelector('.cursor-outline'); const ambientGlow = document.getElementById('ambient-glow'); let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0; if (window.matchMedia("(hover: hover)").matches) { window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; ambientGlow.style.left = `${mouseX - 300}px`; ambientGlow.style.top = `${mouseY - 300}px`; }); function animateCursor() { outlineX += (mouseX - outlineX) * 0.15; outlineY += (mouseY - outlineY) * 0.15; cursorOutline.style.left = `${outlineX}px`; cursorOutline.style.top = `${outlineY}px`; requestAnimationFrame(animateCursor); } animateCursor(); }
+        function bindMagneticButtons() { if (!window.matchMedia("(hover: hover)").matches) return; document.querySelectorAll('.magnetic-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('mousemove', function(e) { const rect = this.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const strength = this.classList.contains('artefak-card') || this.classList.contains('scroll-card') ? 0.05 : 0.2; gsap.to(this, { x: x * strength, y: y * strength, duration: 0.4, ease: "power2.out" }); cursorOutline.style.width = "60px"; cursorOutline.style.height = "60px"; cursorOutline.style.backgroundColor = "white"; cursorOutline.style.mixBlendMode = "difference"; }); newBtn.addEventListener('mouseleave', function() { gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" }); cursorOutline.style.width = "40px"; cursorOutline.style.height = "40px"; cursorOutline.style.backgroundColor = "transparent"; cursorOutline.style.mixBlendMode = "normal"; }); }); }
+        function updateNavState(path) { document.querySelectorAll('.desktop-nav').forEach(link => { link.classList.remove('active-link', 'text-white'); link.classList.add('text-gray-400'); if(link.getAttribute('href') === path) { link.classList.add('active-link', 'text-white'); link.classList.remove('text-gray-400'); } }); document.querySelectorAll('.nav-mobile-item').forEach(link => { link.classList.remove('active-mobile'); if(link.getAttribute('href') === path) link.classList.add('active-mobile'); }); }
+        document.body.addEventListener('click', function(e) { const anchor = e.target.closest('a.nav-link'); if(!anchor) return; const targetUrl = anchor.getAttribute('href'); const currentPath = window.location.pathname.split('/').pop() || 'index.html'; if(targetUrl === currentPath || targetUrl === '#') { e.preventDefault(); return; } e.preventDefault(); gsap.set("#transition-overlay", { transformOrigin: "bottom" }); gsap.to("#transition-overlay", { scaleY: 1, duration: 0.6, ease: "power4.inOut", onComplete: () => { fetch(targetUrl).then(res => res.text()).then(html => { const parser = new DOMParser(); const doc = parser.parseFromString(html, 'text/html'); const newMain = doc.querySelector('main'); if(newMain) { document.querySelector('main').innerHTML = newMain.innerHTML; document.querySelector('main').className = newMain.className; } document.title = doc.title; window.history.pushState({path: targetUrl}, '', targetUrl); updateNavState(targetUrl); window.scrollTo(0,0); gsap.set("#transition-overlay", { transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.6, ease: "power4.inOut", onComplete: initAll }); }).catch(() => { window.location.href = targetUrl; }); } }); });
+        window.addEventListener('popstate', () => window.location.reload()); window.onload = () => { gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.8, ease: "power4.inOut", onComplete: initAll }); updateNavState(window.location.pathname.split('/').pop() || 'index.html'); };
     </script>
 </body>
 </html>
