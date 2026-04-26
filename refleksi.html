@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refleksi | Fahmi E-Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #030712; 
+            color: #f3f4f6;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        /* Page Transition Overlay */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #4f46e5; 
+            z-index: 9999;
+            transform-origin: bottom;
+            pointer-events: none;
+        }
+
+        /* Custom Cursor Inversi */
+        .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px; height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference; 
+            transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            transform: translate(-50%, -50%);
+        }
+        
+        @media (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+        }
+
+        /* Teks Gradasi Artistik */
+        .text-gradient {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism kuat */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ambient Glow Background */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gsap-reveal { visibility: hidden; }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: absolute;
+            left: 50px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #4f46e5, transparent);
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .timeline-line { left: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-transition" id="transition-overlay"></div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="ambient-glow" id="ambient-glow"></div>
+
+    <nav class="fixed w-full z-50 top-0 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-24">
+                <a href="index.html" class="nav-link flex-shrink-0 font-extrabold text-2xl tracking-tighter text-white magnetic-btn">
+                    Fahmi<span class="text-indigo-500">.</span>
+                </a>
+                <div class="hidden md:flex space-x-10">
+                    <a href="index.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Beranda</a>
+                    <a href="profile.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Profile</a>
+                    <a href="artefak.html" class="nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Artefak</a>
+                    <a href="refleksi.html" class="nav-link text-sm font-semibold text-white tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn active-link">Refleksi</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-32 relative px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto w-full relative">
+            
+            <div class="mb-20">
+                <div class="gsap-reveal overflow-hidden mb-4">
+                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-sm gs-line">Pemaknaan Pembelajaran</p>
+                </div>
+                <div class="gsap-reveal overflow-hidden mb-6">
+                    <h1 class="text-5xl md:text-7xl font-black gs-line tracking-tighter">
+                        Jejak <span class="text-gradient">Refleksi.</span>
+                    </h1>
+                </div>
+                <div class="gsap-reveal overflow-hidden">
+                    <p class="text-gray-400 text-lg md:text-xl max-w-2xl font-light leading-relaxed gs-line">
+                        Merenungkan setiap proses, tantangan, dan paradigma baru yang terbentuk selama perjalanan menempuh pendidikan keprofesian guru.
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative pl-6 md:pl-0 mt-16 scroll-wrapper">
+                <div class="timeline-line hidden md:block"></div>
+
+                <div class="relative flex flex-col md:flex-row items-start mb-16 scroll-card z-10">
+                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.5)]">
+                            <i class="fas fa-seedling text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="w-full glass-panel rounded-3xl p-8 border border-gray-800 hover:border-indigo-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Filosofi Ki Hadjar Dewantara</h2>
+                        <div class="w-16 h-1 bg-gradient-to-r from-indigo-500 to-transparent mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-lg">
+                            Mempelajari filosofi pendidikan ini merupakan titik balik terbesar bagi saya. Konsep "menuntun" meruntuhkan paradigma lama bahwa guru adalah pusat otoritas. Saya menyadari bahwa murid bukanlah kertas kosong, melainkan individu dengan kodrat alam dan zamannya masing-masing.
+                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Tugas saya sebagai pendidik layaknya seorang petani; tidak bisa memaksa benih jagung tumbuh menjadi padi, melainkan merawat lahan dan memupuknya agar jagung tersebut tumbuh dengan kualitas terbaik.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-start mb-16 scroll-card z-10">
+                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.5)]">
+                            <i class="fas fa-users text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="w-full glass-panel rounded-3xl p-8 border border-gray-800 hover:border-purple-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Dinamika Praktik Lapangan</h2>
+                        <div class="w-16 h-1 bg-gradient-to-r from-purple-500 to-transparent mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-lg">
+                            Berhadapan langsung dengan siswa di kelas membuka mata saya terhadap pentingnya <strong>Pembelajaran Berdiferensiasi</strong>. Teori di bangku kuliah menjadi hidup saat saya harus memfasilitasi anak dengan gaya belajar visual, auditori, dan kinestetik di waktu yang bersamaan.
+                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Momen paling berkesan adalah ketika pendekatan TaRL (Teaching at the Right Level) berhasil membuat siswa yang awalnya pasif menjadi berani mengemukakan pendapat karena materi disesuaikan dengan tingkat capaian mereka, bukan sekadar menuntaskan kurikulum buku.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-start scroll-card z-10">
+                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.5)]">
+                            <i class="fas fa-microchip text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div class="w-full glass-panel rounded-3xl p-8 border border-gray-800 hover:border-blue-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Sinergi Pedagogi & Teknologi</h2>
+                        <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-transparent mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-lg">
+                            Sebagai pendidik yang juga antusias dalam pengembangan <em>software</em> (Skoola) dan <em>hardware</em> (IoT), saya merefleksikan bahwa teknologi bukanlah pengganti guru, melainkan akselerator empati kelas.
+                        </p>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Ketika sistem administrasi kelas dapat diotomatisasi, saya memiliki lebih banyak waktu untuk memperhatikan aspek sosio-emosional siswa. Penggunaan IoT dan instrumen digital di kelas bukan semata-mata agar terlihat modern, tetapi untuk membangun <em>computational thinking</em> siswa agar siap menghadapi tantangan globalisasi.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Registrasi plugin ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. ENTRY ANIMATION (Membuka Layar di Atas) ---
+        gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" });
+        gsap.to("#transition-overlay", { scaleY: 0, duration: 1, ease: "power4.inOut", delay: 0.2 });
+
+        // Animasi Teks Header Masuk
+        gsap.set(".gs-line", { y: 100 });
+        gsap.set(".gsap-reveal", { visibility: "visible" });
+
+        const tl = gsap.timeline({ delay: 0.8 });
+        tl.to(".gs-line", { y: 0, duration: 1, stagger: 0.1, ease: "power4.out" });
+
+        // --- 2. SCROLL ANIMATION (Kartu Refleksi) ---
+        // Membuat elemen muncul perlahan saat di-scroll
+        gsap.utils.toArray('.scroll-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%", // Mulai saat elemen berada 85% dari atas viewport
+                    toggleActions: "play none none reverse" // Animasi akan mundur jika di-scroll ke atas
+                },
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // --- 3. PAGE TRANSITION LOGIC (Saat Klik Menu) ---
+        document.querySelectorAll('a.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetUrl = this.getAttribute('href');
+                if(targetUrl === window.location.pathname.split('/').pop() || targetUrl === '#') return;
+
+                e.preventDefault(); 
+                gsap.set("#transition-overlay", { transformOrigin: "bottom" });
+                gsap.to("#transition-overlay", { 
+                    scaleY: 1, 
+                    duration: 0.8, 
+                    ease: "power4.inOut",
+                    onComplete: () => {
+                        window.location.href = targetUrl; 
+                    }
+                });
+            });
+        });
+
+        // --- 4. CUSTOM MAGNETIC CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const ambientGlow = document.getElementById('ambient-glow');
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+
+            ambientGlow.style.left = `${mouseX - 300}px`;
+            ambientGlow.style.top = `${mouseY - 300}px`;
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            cursorOutline.style.left = `${outlineX}px`;
+            cursorOutline.style.top = `${outlineY}px`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Magnetic Buttons Logic (Efek tertarik pada kartu)
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Gunakan kekuatan magnet rendah (0.05) untuk kartu besar agar tidak mengganggu bacaan
+                gsap.to(this, { x: x * 0.05, y: y * 0.05, duration: 0.4, ease: "power2.out" });
+                
+                cursorOutline.style.width = "60px";
+                cursorOutline.style.height = "60px";
+                cursorOutline.style.backgroundColor = "white";
+                cursorOutline.style.mixBlendMode = "difference";
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" });
+                
+                cursorOutline.style.width = "40px";
+                cursorOutline.style.height = "40px";
+                cursorOutline.style.backgroundColor = "transparent";
+                cursorOutline.style.mixBlendMode = "normal";
+            });
+        });
+    </script>
+</body>
+</html>
