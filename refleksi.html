@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Refleksi | Fahmi E-Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -12,26 +12,24 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; cursor: none; overflow-x: hidden; }
-        .page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #4f46e5; z-index: 9999; transform-origin: bottom; pointer-events: none; }
-        .cursor-dot { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background-color: white; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; transform: translate(-50%, -50%); }
-        .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9999; transition: width 0.3s, height 0.3s, background-color 0.3s; transform: translate(-50%, -50%); }
+        html, body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; cursor: none; overflow-x: hidden; width: 100%; }
+        .page-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #4f46e5; z-index: 99999; transform-origin: bottom; pointer-events: none; }
+        .cursor-dot { position: fixed; top: 0; left: 0; width: 12px; height: 12px; background-color: white; border-radius: 50%; pointer-events: none; z-index: 100000; mix-blend-mode: difference; transform: translate(-50%, -50%); }
+        .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none; z-index: 99998; transition: width 0.3s, height 0.3s, background-color 0.3s; transform: translate(-50%, -50%); }
         @media (pointer: coarse) { body { cursor: auto; } .cursor-dot, .cursor-outline { display: none !important; } }
         .text-gradient { background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .ambient-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; }
+        .ambient-glow { position: absolute; width: 100vw; height: 100vh; max-width: 600px; max-height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; }
         .gsap-reveal { visibility: hidden; }
-        .timeline-line { position: absolute; left: 50px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #4f46e5, transparent); z-index: 0; }
-        @media (max-width: 768px) { .timeline-line { display: none; } }
+        
+        .timeline-line { position: absolute; left: 40px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #4f46e5, transparent); z-index: 0; }
+        @media (max-width: 768px) { .timeline-line { left: 24px; } }
 
-        .nav-mobile-item {
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 9999px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 48px; height: 48px; color: #9ca3af;
-        }
+        .bottom-nav-mobile { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 90000; display: flex; align-items: center; padding: 0.5rem; border-radius: 9999px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); white-space: nowrap; }
+        .nav-mobile-item { display: flex; align-items: center; justify-content: center; border-radius: 9999px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 44px; height: 44px; color: #9ca3af; margin: 0 0.25rem; }
         .nav-mobile-item:hover { background: rgba(31, 41, 55, 0.8); }
-        .nav-mobile-item .nav-text { max-width: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.875rem; font-weight: 700; white-space: nowrap; margin-left: 0; }
-        .nav-mobile-item.active-mobile { width: auto; padding: 0 1.25rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .nav-mobile-item .nav-text { max-width: 0; opacity: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.75rem; font-weight: 700; margin-left: 0; }
+        .nav-mobile-item.active-mobile { width: auto; padding: 0 1rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; }
         .nav-mobile-item.active-mobile .nav-text { max-width: 100px; opacity: 1; margin-left: 0.5rem; }
     </style>
 </head>
@@ -41,9 +39,9 @@
     <div class="cursor-dot"></div><div class="cursor-outline"></div><div class="ambient-glow" id="ambient-glow"></div>
 
     <nav class="fixed w-full z-50 top-0 glass-panel border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex justify-center md:justify-between items-center h-16 md:h-24">
-                <a href="index.html" class="nav-link desktop-nav flex-shrink-0 font-extrabold text-2xl tracking-tighter text-white magnetic-btn">Fahmi<span class="text-indigo-500">.</span></a>
+                <a href="index.html" class="nav-link desktop-nav flex-shrink-0 font-extrabold text-xl md:text-2xl tracking-tighter text-white magnetic-btn">Fahmi<span class="text-indigo-500">.</span></a>
                 <div class="hidden md:flex space-x-10">
                     <a href="index.html" class="desktop-nav nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Beranda</a>
                     <a href="profile.html" class="desktop-nav nav-link text-sm font-semibold text-gray-400 tracking-widest uppercase hover:text-indigo-400 transition magnetic-btn">Profile</a>
@@ -54,27 +52,27 @@
         </div>
     </nav>
 
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden glass-panel rounded-full p-2 flex items-center space-x-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-gray-700/80">
+    <div class="bottom-nav-mobile md:hidden glass-panel border border-gray-700/80">
         <a href="index.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-home text-lg"></i><span class="nav-text">Beranda</span></a>
         <a href="profile.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-user text-lg"></i><span class="nav-text">Profile</span></a>
         <a href="artefak.html" class="nav-mobile-item nav-link magnetic-btn"><i class="fas fa-folder-open text-lg"></i><span class="nav-text">Artefak</span></a>
         <a href="refleksi.html" class="nav-mobile-item nav-link active-mobile magnetic-btn"><i class="fas fa-lightbulb text-lg"></i><span class="nav-text">Refleksi</span></a>
     </div>
 
-    <main class="min-h-screen pt-32 md:pt-40 pb-32 relative px-6 overflow-hidden">
+    <main class="min-h-screen pt-24 md:pt-36 pb-32 relative px-4 sm:px-6 overflow-hidden w-full">
         <div class="max-w-5xl mx-auto w-full relative">
             
-            <div class="mb-16 md:mb-20 text-center md:text-left">
-                <div class="gsap-reveal overflow-hidden mb-4">
-                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-xs md:text-sm gs-line">Pemaknaan Pembelajaran</p>
+            <div class="mb-12 md:mb-20 text-center md:text-left">
+                <div class="gsap-reveal overflow-hidden mb-3 md:mb-4">
+                    <p class="text-indigo-400 font-bold tracking-widest uppercase text-[10px] md:text-sm gs-line">Pemaknaan Pembelajaran</p>
                 </div>
-                <div class="gsap-reveal overflow-hidden mb-6">
-                    <h1 class="text-4xl md:text-7xl font-black gs-line tracking-tighter">
+                <div class="gsap-reveal overflow-hidden mb-4 md:mb-6">
+                    <h1 class="text-3xl sm:text-5xl md:text-7xl font-black gs-line tracking-tighter">
                         Jejak <span class="text-gradient">Refleksi.</span>
                     </h1>
                 </div>
                 <div class="gsap-reveal overflow-hidden">
-                    <p class="text-gray-400 text-base md:text-xl max-w-2xl font-light leading-relaxed gs-line mx-auto md:mx-0">
+                    <p class="text-gray-400 text-[13px] md:text-xl max-w-2xl font-light leading-relaxed gs-line mx-auto md:mx-0">
                         Merenungkan setiap proses, tantangan, dan paradigma baru yang terbentuk selama perjalanan menempuh pendidikan keprofesian guru.
                     </p>
                 </div>
@@ -83,46 +81,46 @@
             <div class="relative mt-10 md:mt-16 scroll-wrapper">
                 <div class="timeline-line"></div>
 
-                <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16 scroll-card z-10">
-                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
-                        <div class="w-12 h-12 bg-indigo-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.5)]"><i class="fas fa-seedling text-white text-sm"></i></div>
+                <div class="relative flex flex-col md:flex-row items-start mb-10 md:mb-16 scroll-card z-10 w-full">
+                    <div class="absolute md:relative left-0 md:left-auto md:flex flex-shrink-0 w-12 h-12 md:w-20 md:h-20 items-center justify-center z-10 md:mr-8 bg-[#030712] rounded-full">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-600 rounded-full border-4 border-[#030712] md:border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.5)]"><i class="fas fa-seedling text-white text-xs md:text-sm"></i></div>
                     </div>
-                    <div class="w-full glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-indigo-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
-                        <h2 class="text-xl md:text-3xl font-bold text-white mb-4">Filosofi Ki Hadjar Dewantara</h2>
-                        <div class="w-16 h-1 bg-gradient-to-r from-indigo-500 to-transparent mb-6"></div>
-                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-base md:text-lg">
+                    <div class="w-full ml-0 md:ml-0 mt-6 md:mt-0 glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-indigo-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-lg md:text-3xl font-bold text-white mb-3 md:mb-4 pt-4 md:pt-0 pl-10 md:pl-0">Filosofi Ki Hadjar Dewantara</h2>
+                        <div class="w-12 md:w-16 h-1 bg-gradient-to-r from-indigo-500 to-transparent mb-4 md:mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-[13px] md:text-lg">
                             Mempelajari filosofi pendidikan ini merupakan titik balik terbesar bagi saya. Konsep "menuntun" meruntuhkan paradigma lama bahwa guru adalah pusat otoritas.
                         </p>
-                        <p class="text-gray-400 text-sm leading-relaxed">
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
                             Tugas saya sebagai pendidik layaknya seorang petani; tidak bisa memaksa benih jagung tumbuh menjadi padi, melainkan merawat lahan dan memupuknya agar jagung tersebut tumbuh dengan kualitas terbaik.
                         </p>
                     </div>
                 </div>
 
-                <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16 scroll-card z-10">
-                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.5)]"><i class="fas fa-users text-white text-sm"></i></div>
+                <div class="relative flex flex-col md:flex-row items-start mb-10 md:mb-16 scroll-card z-10 w-full">
+                    <div class="absolute md:relative left-0 md:left-auto md:flex flex-shrink-0 w-12 h-12 md:w-20 md:h-20 items-center justify-center z-10 md:mr-8 bg-[#030712] rounded-full">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-full border-4 border-[#030712] md:border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(147,51,234,0.5)]"><i class="fas fa-users text-white text-xs md:text-sm"></i></div>
                     </div>
-                    <div class="w-full glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-purple-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
-                        <h2 class="text-xl md:text-3xl font-bold text-white mb-4">Dinamika Praktik Lapangan</h2>
-                        <div class="w-16 h-1 bg-gradient-to-r from-purple-500 to-transparent mb-6"></div>
-                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-base md:text-lg">
+                    <div class="w-full ml-0 md:ml-0 mt-6 md:mt-0 glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-purple-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-lg md:text-3xl font-bold text-white mb-3 md:mb-4 pt-4 md:pt-0 pl-10 md:pl-0">Dinamika Praktik Lapangan</h2>
+                        <div class="w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-transparent mb-4 md:mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-[13px] md:text-lg">
                             Berhadapan langsung dengan siswa di kelas membuka mata saya terhadap pentingnya <strong>Pembelajaran Berdiferensiasi</strong>. Teori menjadi hidup saat saya harus memfasilitasi keragaman gaya belajar siswa di kelas yang sama.
                         </p>
                     </div>
                 </div>
 
-                <div class="relative flex flex-col md:flex-row items-start scroll-card z-10">
-                    <div class="hidden md:flex flex-shrink-0 w-24 h-24 items-center justify-center relative z-10 mr-8">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full border-4 border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.5)]"><i class="fas fa-microchip text-white text-sm"></i></div>
+                <div class="relative flex flex-col md:flex-row items-start scroll-card z-10 w-full">
+                    <div class="absolute md:relative left-0 md:left-auto md:flex flex-shrink-0 w-12 h-12 md:w-20 md:h-20 items-center justify-center z-10 md:mr-8 bg-[#030712] rounded-full">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full border-4 border-[#030712] md:border-gray-900 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.5)]"><i class="fas fa-microchip text-white text-xs md:text-sm"></i></div>
                     </div>
-                    <div class="w-full glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-blue-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
-                        <h2 class="text-xl md:text-3xl font-bold text-white mb-4">Sinergi Pedagogi & Teknologi</h2>
-                        <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-transparent mb-6"></div>
-                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-base md:text-lg">
+                    <div class="w-full ml-0 md:ml-0 mt-6 md:mt-0 glass-panel rounded-3xl p-6 md:p-8 border border-gray-800 hover:border-blue-500/50 transition-colors duration-500 magnetic-btn" data-tilt data-tilt-max="3" data-tilt-speed="400">
+                        <h2 class="text-lg md:text-3xl font-bold text-white mb-3 md:mb-4 pt-4 md:pt-0 pl-10 md:pl-0">Sinergi Pedagogi & Teknologi</h2>
+                        <div class="w-12 md:w-16 h-1 bg-gradient-to-r from-blue-500 to-transparent mb-4 md:mb-6"></div>
+                        <p class="text-gray-300 leading-relaxed font-light mb-4 text-[13px] md:text-lg">
                             Sebagai pendidik yang juga antusias dalam pengembangan <em>software</em> dan <em>hardware</em> (IoT), saya merefleksikan bahwa teknologi bukanlah pengganti guru, melainkan akselerator empati kelas.
                         </p>
-                        <p class="text-gray-400 text-sm leading-relaxed">
+                        <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
                             Ketika sistem kelas diotomatisasi, saya memiliki lebih banyak waktu untuk memperhatikan aspek sosio-emosional siswa.
                         </p>
                     </div>
@@ -134,13 +132,12 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
-        function initAll() { ScrollTrigger.getAll().forEach(st => st.kill()); const tiltElements = document.querySelectorAll("[data-tilt]"); if(tiltElements.length > 0) VanillaTilt.init(tiltElements); gsap.set(".gs-line", { y: 50, opacity: 0 }); gsap.set(".gs-image, .gs-content, .gs-card", { opacity: 0, y: 30 }); gsap.set(".gsap-reveal", { visibility: "visible" }); const tl = gsap.timeline({ delay: 0.1 }); tl.to(".gs-line", { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }).to(".gs-image, .gs-content", { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4").to(".gs-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6"); gsap.utils.toArray('.scroll-reveal-header').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 30}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1 }); }); gsap.utils.toArray('.scroll-reveal-card, .scroll-card').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 50}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1, ease: "power3.out" }); }); bindMagneticButtons(); }
-        const cursorDot = document.querySelector('.cursor-dot'); const cursorOutline = document.querySelector('.cursor-outline'); const ambientGlow = document.getElementById('ambient-glow'); let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0; window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; ambientGlow.style.left = `${mouseX - 300}px`; ambientGlow.style.top = `${mouseY - 300}px`; }); function animateCursor() { outlineX += (mouseX - outlineX) * 0.15; outlineY += (mouseY - outlineY) * 0.15; cursorOutline.style.left = `${outlineX}px`; cursorOutline.style.top = `${outlineY}px`; requestAnimationFrame(animateCursor); } animateCursor();
-        function bindMagneticButtons() { document.querySelectorAll('.magnetic-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('mousemove', function(e) { const rect = this.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const strength = this.classList.contains('artefak-card') || this.classList.contains('scroll-card') ? 0.05 : 0.2; gsap.to(this, { x: x * strength, y: y * strength, duration: 0.4, ease: "power2.out" }); cursorOutline.style.width = "60px"; cursorOutline.style.height = "60px"; cursorOutline.style.backgroundColor = "white"; cursorOutline.style.mixBlendMode = "difference"; }); newBtn.addEventListener('mouseleave', function() { gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" }); cursorOutline.style.width = "40px"; cursorOutline.style.height = "40px"; cursorOutline.style.backgroundColor = "transparent"; cursorOutline.style.mixBlendMode = "normal"; }); }); }
-        function updateNavState(path) { document.querySelectorAll('.desktop-nav').forEach(link => { link.classList.remove('active-link', 'text-white'); link.classList.add('text-gray-400'); if(link.getAttribute('href') === path) { link.classList.add('active-link', 'text-white'); link.classList.remove('text-gray-400'); } }); document.querySelectorAll('.nav-mobile-item').forEach(link => { link.classList.remove('active-mobile'); if(link.getAttribute('href') === path) { link.classList.add('active-mobile'); } }); }
-        document.body.addEventListener('click', function(e) { const anchor = e.target.closest('a.nav-link'); if(!anchor) return; const targetUrl = anchor.getAttribute('href'); const currentPath = window.location.pathname.split('/').pop() || 'index.html'; if(targetUrl === currentPath || targetUrl === '#') { e.preventDefault(); return; } e.preventDefault(); gsap.set("#transition-overlay", { transformOrigin: "bottom" }); gsap.to("#transition-overlay", { scaleY: 1, duration: 0.6, ease: "power4.inOut", onComplete: () => { fetch(targetUrl).then(res => res.text()).then(html => { const parser = new DOMParser(); const doc = parser.parseFromString(html, 'text/html'); const newMain = doc.querySelector('main'); if(newMain) { document.querySelector('main').innerHTML = newMain.innerHTML; document.querySelector('main').className = newMain.className; } document.title = doc.title; window.history.pushState({path: targetUrl}, '', targetUrl); updateNavState(targetUrl); gsap.set("#transition-overlay", { transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.6, ease: "power4.inOut", onComplete: initAll }); }).catch(() => { window.location.href = targetUrl; }); } }); });
-        window.addEventListener('popstate', () => window.location.reload());
-        window.onload = () => { gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.8, ease: "power4.inOut", onComplete: initAll }); updateNavState(window.location.pathname.split('/').pop() || 'index.html'); };
+        function initAll() { ScrollTrigger.getAll().forEach(st => st.kill()); const tiltElements = document.querySelectorAll("[data-tilt]"); if(tiltElements.length > 0 && window.matchMedia("(hover: hover)").matches) { VanillaTilt.init(tiltElements); } gsap.set(".gs-line", { y: 50, opacity: 0 }); gsap.set(".gs-image, .gs-content, .gs-card", { opacity: 0, y: 30 }); gsap.set(".gsap-reveal", { visibility: "visible" }); const tl = gsap.timeline({ delay: 0.1 }); tl.to(".gs-line", { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }).to(".gs-image, .gs-content", { opacity: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4").to(".gs-card", { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6"); gsap.utils.toArray('.scroll-reveal-header').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 30}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1 }); }); gsap.utils.toArray('.scroll-reveal-card, .scroll-card, .scroll-item').forEach(el => { gsap.fromTo(el, {opacity: 0, y: 50}, { scrollTrigger: { trigger: el, start: "top 85%" }, opacity: 1, y: 0, duration: 1, ease: "power3.out" }); }); bindMagneticButtons(); }
+        const cursorDot = document.querySelector('.cursor-dot'); const cursorOutline = document.querySelector('.cursor-outline'); const ambientGlow = document.getElementById('ambient-glow'); let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0; if (window.matchMedia("(hover: hover)").matches) { window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; ambientGlow.style.left = `${mouseX - 300}px`; ambientGlow.style.top = `${mouseY - 300}px`; }); function animateCursor() { outlineX += (mouseX - outlineX) * 0.15; outlineY += (mouseY - outlineY) * 0.15; cursorOutline.style.left = `${outlineX}px`; cursorOutline.style.top = `${outlineY}px`; requestAnimationFrame(animateCursor); } animateCursor(); }
+        function bindMagneticButtons() { if (!window.matchMedia("(hover: hover)").matches) return; document.querySelectorAll('.magnetic-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('mousemove', function(e) { const rect = this.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; const strength = this.classList.contains('artefak-card') || this.classList.contains('scroll-card') ? 0.05 : 0.2; gsap.to(this, { x: x * strength, y: y * strength, duration: 0.4, ease: "power2.out" }); cursorOutline.style.width = "60px"; cursorOutline.style.height = "60px"; cursorOutline.style.backgroundColor = "white"; cursorOutline.style.mixBlendMode = "difference"; }); newBtn.addEventListener('mouseleave', function() { gsap.to(this, { x: 0, y: 0, duration: 0.4, ease: "elastic.out(1, 0.3)" }); cursorOutline.style.width = "40px"; cursorOutline.style.height = "40px"; cursorOutline.style.backgroundColor = "transparent"; cursorOutline.style.mixBlendMode = "normal"; }); }); }
+        function updateNavState(path) { document.querySelectorAll('.desktop-nav').forEach(link => { link.classList.remove('active-link', 'text-white'); link.classList.add('text-gray-400'); if(link.getAttribute('href') === path) { link.classList.add('active-link', 'text-white'); link.classList.remove('text-gray-400'); } }); document.querySelectorAll('.nav-mobile-item').forEach(link => { link.classList.remove('active-mobile'); if(link.getAttribute('href') === path) link.classList.add('active-mobile'); }); }
+        document.body.addEventListener('click', function(e) { const anchor = e.target.closest('a.nav-link'); if(!anchor) return; const targetUrl = anchor.getAttribute('href'); const currentPath = window.location.pathname.split('/').pop() || 'index.html'; if(targetUrl === currentPath || targetUrl === '#') { e.preventDefault(); return; } e.preventDefault(); gsap.set("#transition-overlay", { transformOrigin: "bottom" }); gsap.to("#transition-overlay", { scaleY: 1, duration: 0.6, ease: "power4.inOut", onComplete: () => { fetch(targetUrl).then(res => res.text()).then(html => { const parser = new DOMParser(); const doc = parser.parseFromString(html, 'text/html'); const newMain = doc.querySelector('main'); if(newMain) { document.querySelector('main').innerHTML = newMain.innerHTML; document.querySelector('main').className = newMain.className; } document.title = doc.title; window.history.pushState({path: targetUrl}, '', targetUrl); updateNavState(targetUrl); window.scrollTo(0,0); gsap.set("#transition-overlay", { transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.6, ease: "power4.inOut", onComplete: initAll }); }).catch(() => { window.location.href = targetUrl; }); } }); });
+        window.addEventListener('popstate', () => window.location.reload()); window.onload = () => { gsap.set("#transition-overlay", { scaleY: 1, transformOrigin: "top" }); gsap.to("#transition-overlay", { scaleY: 0, duration: 0.8, ease: "power4.inOut", onComplete: initAll }); updateNavState(window.location.pathname.split('/').pop() || 'index.html'); };
     </script>
 </body>
 </html>
