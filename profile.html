@@ -6,6 +6,8 @@
     <title>Profile | Fahmi E-Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
@@ -29,9 +31,21 @@
         .nav-mobile-item.active-mobile { width: auto; padding: 0 1rem; background: rgba(99, 102, 241, 0.15); color: #818cf8; }
         .nav-mobile-item.active-mobile .nav-text { max-width: 100px; opacity: 1; margin-left: 0.5rem; }
 
-        /* Badge Style untuk Tech Stack */
-        .tech-badge { display: inline-flex; items-center; padding: 0.25rem 0.75rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(75, 85, 99, 0.5); border-radius: 9999px; font-size: 0.75rem; font-weight: 600; color: #d1d5db; margin: 0.25rem; transition: all 0.3s; }
-        .tech-badge:hover { border-color: #6366f1; color: #fff; background: rgba(79, 70, 229, 0.2); transform: translateY(-2px); }
+        /* Premium Tech Badge Style */
+        .tech-badge { 
+            display: inline-flex; align-items: center; padding: 0.4rem 1rem; 
+            background: rgba(31, 41, 55, 0.5); border: 1px solid rgba(75, 85, 99, 0.4); 
+            border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #d1d5db; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(4px);
+        }
+        .tech-badge:hover { 
+            border-color: #818cf8; color: #fff; background: rgba(79, 70, 229, 0.15); 
+            transform: translateY(-3px); box-shadow: 0 6px 15px -3px rgba(79, 70, 229, 0.3); 
+        }
+        
+        /* Hover Karir Profesional */
+        .career-card { transition: all 0.3s ease; }
+        .career-card:hover { border-color: rgba(99, 102, 241, 0.5); background: rgba(31, 41, 55, 0.8); transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -75,7 +89,7 @@
                                 <i class="fas fa-user-tie text-6xl md:text-8xl text-gray-700"></i>
                             </div>
                             <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-gray-950 via-gray-900/90 to-transparent">
-                                <h2 class="text-2xl md:text-3xl font-bold text-white mb-1">Fahmi (Izzul)</h2>
+                                <h2 class="text-2xl md:text-3xl font-bold text-white mb-1">Muhammad Izzul Fahmi</h2>
                                 <p class="text-indigo-400 font-semibold text-xs md:text-sm">Pendidik & Software Developer</p>
                             </div>
                         </div>
@@ -100,45 +114,57 @@
                     </div>
 
                     <div class="gsap-reveal scroll-item">
-                        <h3 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-code text-indigo-500 mr-3"></i>Bahasa Pemrograman & Framework</h3>
-                        <div class="glass-panel p-6 rounded-2xl border border-gray-700/50 flex flex-wrap">
-                            <span class="tech-badge"><i class="fab fa-golang mr-2"></i>Go (Golang)</span>
-                            <span class="tech-badge"><i class="fab fa-php mr-2"></i>PHP (Laravel)</span>
-                            <span class="tech-badge"><i class="fab fa-react mr-2"></i>React</span>
-                            <span class="tech-badge"><i class="fab fa-js mr-2"></i>TypeScript</span>
-                            <span class="tech-badge"><i class="fas fa-mobile-alt mr-2"></i>Flutter</span>
-                            <span class="tech-badge"><i class="fas fa-database mr-2"></i>PostgreSQL</span>
-                            <span class="tech-badge"><i class="fas fa-file-excel mr-2"></i>VBA (Excel)</span>
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-code text-indigo-500 mr-3"></i>Pemrograman & Framework</h3>
+                        <div class="glass-panel p-6 rounded-2xl border border-gray-700/50 flex flex-wrap gap-3">
+                            <span class="tech-badge"><i class="devicon-go-original-wordmark colored text-2xl mr-2"></i>Go</span>
+                            <span class="tech-badge"><i class="devicon-php-plain colored text-xl mr-2"></i>PHP</span>
+                            <span class="tech-badge"><i class="devicon-laravel-original colored text-xl mr-2"></i>Laravel</span>
+                            <span class="tech-badge"><i class="devicon-react-original colored text-xl mr-2"></i>React</span>
+                            <span class="tech-badge"><i class="devicon-typescript-plain colored text-xl mr-2"></i>TypeScript</span>
+                            <span class="tech-badge"><i class="devicon-flutter-plain colored text-xl mr-2"></i>Flutter</span>
+                            <span class="tech-badge"><i class="devicon-postgresql-plain colored text-xl mr-2"></i>PostgreSQL</span>
+                            <span class="tech-badge"><i class="fas fa-file-excel text-green-500 text-xl mr-2"></i>VBA (Excel)</span>
                         </div>
                     </div>
 
                     <div class="gsap-reveal scroll-item">
                         <h3 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-server text-indigo-500 mr-3"></i>Infrastruktur, Jaringan & Hardware</h3>
-                        <div class="glass-panel p-6 rounded-2xl border border-gray-700/50 flex flex-wrap">
-                            <span class="tech-badge"><i class="fab fa-docker mr-2"></i>Docker</span>
-                            <span class="tech-badge"><i class="fas fa-network-wired mr-2"></i>Proxmox VE (LXC)</span>
-                            <span class="tech-badge"><i class="fab fa-linux mr-2"></i>Debian / Ubuntu</span>
-                            <span class="tech-badge"><i class="fas fa-wifi mr-2"></i>OpenWRT & SQM QoS</span>
-                            <span class="tech-badge"><i class="fas fa-cloud mr-2"></i>Cloudflare Tunnels</span>
-                            <span class="tech-badge"><i class="fas fa-microchip mr-2"></i>ESP32 & Arduino</span>
-                            <span class="tech-badge"><i class="fas fa-sim-card mr-2"></i>Sensor & RS232 / RFID</span>
+                        <div class="glass-panel p-6 rounded-2xl border border-gray-700/50 flex flex-wrap gap-3">
+                            <span class="tech-badge"><i class="devicon-docker-plain colored text-xl mr-2"></i>Docker</span>
+                            <span class="tech-badge"><i class="devicon-debian-plain colored text-xl mr-2"></i>Debian/Ubuntu</span>
+                            <span class="tech-badge"><i class="fas fa-network-wired text-indigo-400 text-lg mr-2"></i>Proxmox VE (LXC)</span>
+                            <span class="tech-badge"><i class="fas fa-wifi text-blue-400 text-lg mr-2"></i>OpenWRT & SQM</span>
+                            <span class="tech-badge"><i class="fas fa-cloud text-orange-400 text-lg mr-2"></i>Cloudflare Tunnels</span>
+                            <span class="tech-badge"><i class="devicon-arduino-plain colored text-xl mr-2"></i>Arduino & ESP32</span>
+                            <span class="tech-badge"><i class="fas fa-microchip text-teal-400 text-lg mr-2"></i>IoT & Sensor RFID</span>
                         </div>
                     </div>
 
                     <div class="gsap-reveal scroll-item">
-                        <h3 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-laptop-code text-indigo-500 mr-3"></i>Riwayat Peran Profesional</h3>
-                        <div class="space-y-4">
-                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center"><i class="fas fa-briefcase text-indigo-500 mr-3"></i>Riwayat Peran Profesional</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50 career-card">
+                                <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center mb-3">
+                                    <i class="fas fa-laptop-code text-indigo-400"></i>
+                                </div>
                                 <h4 class="text-white font-bold text-base md:text-lg">Pengembang Sistem "Skoola"</h4>
-                                <p class="text-gray-400 text-sm mt-1">Membangun arsitektur <em>multi-tenant</em> Sistem Manajemen Sekolah/ERP untuk digitalisasi layanan administrasi.</p>
+                                <p class="text-gray-400 text-sm mt-2">Membangun arsitektur <em>multi-tenant</em> Sistem Manajemen Sekolah/ERP untuk digitalisasi layanan administrasi sekolah.</p>
                             </div>
-                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50">
-                                <h4 class="text-white font-bold text-base md:text-lg">Operator Sekolah (Dapodik) & Teknisi</h4>
-                                <p class="text-gray-400 text-sm mt-1">Mengelola sinkronisasi data kependidikan nasional dan memastikan infrastruktur perangkat keras sekolah berjalan optimal.</p>
+                            
+                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50 career-card">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mb-3">
+                                    <i class="fas fa-database text-blue-400"></i>
+                                </div>
+                                <h4 class="text-white font-bold text-base md:text-lg">Operator Dapodik & Teknisi</h4>
+                                <p class="text-gray-400 text-sm mt-2">Mengelola sinkronisasi data kependidikan nasional dan memastikan infrastruktur perangkat keras sekolah berjalan optimal.</p>
                             </div>
-                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50">
+                            
+                            <div class="glass-panel p-5 rounded-2xl border border-gray-700/50 career-card md:col-span-2">
+                                <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center mb-3">
+                                    <i class="fas fa-photo-video text-purple-400"></i>
+                                </div>
                                 <h4 class="text-white font-bold text-base md:text-lg">Kreator Multimedia Pembelajaran</h4>
-                                <p class="text-gray-400 text-sm mt-1">Produksi materi visual dan audio menggunakan CapCut, Logic Pro X, dan BandLab.</p>
+                                <p class="text-gray-400 text-sm mt-2">Memproduksi materi visual interaktif dan pengolahan audio menggunakan CapCut, Logic Pro X, serta BandLab untuk mendukung pengalaman belajar siswa.</p>
                             </div>
                         </div>
                     </div>
