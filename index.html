@@ -22,7 +22,6 @@
         .ambient-glow { position: absolute; width: 100vw; height: 100vh; max-width: 600px; max-height: 600px; background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; pointer-events: none; z-index: -1; }
         .gsap-reveal { visibility: hidden; }
 
-        /* Floating Bottom Nav untuk Mobile - Diperbaiki agar menempel erat */
         .bottom-nav-mobile { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 90000; display: flex; align-items: center; padding: 0.5rem; border-radius: 9999px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); white-space: nowrap; }
         .nav-mobile-item { display: flex; align-items: center; justify-content: center; border-radius: 9999px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); width: 44px; height: 44px; color: #9ca3af; margin: 0 0.25rem; }
         .nav-mobile-item:hover { background: rgba(31, 41, 55, 0.8); }
@@ -85,13 +84,15 @@
                 </div>
                 
                 <div class="gsap-reveal flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-6 gs-btn-group w-full">
-                    <a href="profile.html" class="nav-link magnetic-btn w-full sm:w-auto text-center group relative px-6 py-3 md:px-8 md:py-4 bg-white text-gray-950 font-bold rounded-full overflow-hidden">
-                        <span class="relative z-10 text-sm md:text-base">Kenali Saya</span>
-                        <div class="absolute inset-0 bg-indigo-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-out z-0"></div>
-                        <span class="relative z-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 absolute inset-0 flex items-center justify-center text-sm md:text-base">Kenali Saya</span>
+                    <a href="profile.html" class="nav-link magnetic-btn w-full sm:w-auto text-center group relative px-8 py-3 md:py-4 bg-white rounded-full overflow-hidden transition-all duration-300">
+                        <div class="absolute inset-0 bg-indigo-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                        <span class="relative z-10 text-gray-950 group-hover:text-white font-bold text-sm md:text-base transition-colors duration-300">
+                            Kenali Saya
+                        </span>
                     </a>
-                    <a href="artefak.html" class="nav-link magnetic-btn w-full sm:w-auto justify-center px-6 py-3 md:px-8 md:py-4 rounded-full border border-gray-700 text-white font-bold hover:border-indigo-500 transition-colors duration-300 flex items-center text-sm md:text-base">
-                        Lihat Artefak <i class="fas fa-arrow-right ml-3 -rotate-45 group-hover:rotate-0 transition-transform"></i>
+                    
+                    <a href="artefak.html" class="nav-link magnetic-btn w-full sm:w-auto justify-center px-6 py-3 md:px-8 md:py-4 rounded-full border border-gray-700 text-white font-bold hover:border-indigo-500 transition-colors duration-300 flex items-center text-sm md:text-base group">
+                        Lihat Artefak <i class="fas fa-arrow-right ml-3 -rotate-45 group-hover:rotate-0 transition-transform duration-300"></i>
                     </a>
                 </div>
             </div>
@@ -120,7 +121,7 @@
             ScrollTrigger.getAll().forEach(st => st.kill());
             const tiltElements = document.querySelectorAll("[data-tilt]");
             if(tiltElements.length > 0 && window.matchMedia("(hover: hover)").matches) {
-                VanillaTilt.init(tiltElements); // Tilt hanya di desktop
+                VanillaTilt.init(tiltElements);
             }
 
             gsap.set(".gs-line", { y: 50, opacity: 0 });
@@ -161,7 +162,7 @@
         }
 
         function bindMagneticButtons() {
-            if (!window.matchMedia("(hover: hover)").matches) return; // Matikan magnet di HP
+            if (!window.matchMedia("(hover: hover)").matches) return;
             document.querySelectorAll('.magnetic-btn').forEach(btn => {
                 const newBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(newBtn, btn);
@@ -182,7 +183,6 @@
             });
         }
 
-        // SPA SEAMLESS ROUTER
         function updateNavState(path) {
             document.querySelectorAll('.desktop-nav').forEach(link => {
                 link.classList.remove('active-link', 'text-white'); link.classList.add('text-gray-400');
